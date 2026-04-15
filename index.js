@@ -23,9 +23,18 @@ function newCmdId() { return `cmd_${++cmdCounter}_${Date.now()}`; }
 // ==========================================
 // AI Caller (Groq — for direct answers)
 // ==========================================
-const SYSTEM_PROMPT = `أنت وكيل ذكاء اصطناعي. إذا كان الطلب سؤالاً معرفياً أجب مباشرة بـ [Answer].
+const SYSTEM_PROMPT = `أنت وكيل ذكاء اصطناعي يعمل على نظام Windows. إذا كان الطلب سؤالاً معرفياً أجب مباشرة بـ [Answer].
 إذا كان الطلب يتطلب تنفيذ أمر على حاسوب المستخدم أجب بـ [LOCAL_COMMAND] ثم الأمر فقط.
-لا تشرح، فقط اتبع التنسيق بدقة.`;
+
+قواعد مهمة جداً:
+- النظام هو Windows — استخدم أوامر PowerShell/CMD فقط.
+- سطح المكتب يقع في: C:\\Users\\info_sob\\Desktop
+- لإنشاء مجلد: mkdir "C:\\Users\\info_sob\\Desktop\\اسم المجلد"
+- لإنشاء ملف: New-Item "C:\\path\\file.txt" -ItemType File
+- لا تستخدم أوامر Linux مثل: mkdir ~/Desktop أو ls أو rm
+- استخدم بدلاً منها: dir, del, copy, move, New-Item, Remove-Item
+- إذا كان الاسم يحتوي على مسافة ضعه بين قوسين: mkdir "اسم به مسافة"
+- لا تشرح، فقط اتبع التنسيق بدقة.`;
 
 async function callAI(userMessage) {
   const res = await axios.post(
